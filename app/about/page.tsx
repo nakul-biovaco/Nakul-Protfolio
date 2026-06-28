@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { MapPin, GraduationCap, Heart, Lightbulb, Target, Rocket, Coffee, Music, Book, Gamepad2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ParallaxContainer } from "@/components/parallax-container"
 import { CupSoda, Users, Film } from "lucide-react"
 
 export default function AboutPage() {
@@ -146,30 +145,6 @@ export default function AboutPage() {
     <div className="lg:ml-64 min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20">
-        <div className="absolute inset-0">
-          <ParallaxContainer speed={0.2}>
-            <div className="absolute top-20 right-10 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl animate-blob float"></div>
-          </ParallaxContainer>
-          <ParallaxContainer speed={0.3}>
-            <div className="absolute bottom-20 left-10 w-96 h-96 bg-accent/10 dark:bg-accent/5 rounded-full blur-3xl animate-blob float-delayed"></div>
-          </ParallaxContainer>
-
-          {/* Floating Elements */}
-          <motion.div
-            className="absolute top-32 left-20 text-primary/20"
-            animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
-            transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-          >
-            <Heart size={30} />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-40 right-32 text-accent/20"
-            animate={{ y: [0, 15, 0], rotate: [0, -15, 0] }}
-            transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, delay: 1 }}
-          >
-            <Rocket size={35} />
-          </motion.div>
-        </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
@@ -391,12 +366,6 @@ export default function AboutPage() {
 
       {/* Values Section */}
       <section className="py-20 bg-muted/50 relative overflow-hidden">
-        <ParallaxContainer speed={0.1}>
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-20 w-40 h-40 border border-primary rounded-full animate-pulse"></div>
-            <div className="absolute bottom-20 right-20 w-32 h-32 border border-accent rounded-full animate-pulse animation-delay-2000"></div>
-          </div>
-        </ParallaxContainer>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div

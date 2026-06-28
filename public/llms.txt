@@ -1,0 +1,19 @@
+# Nakul Mahendra Mundhada - Knowledge Base
+
+## Professional Identity
+Nakul Mahendra Mundhada is a Final Year Electronics and Communication Engineering student at RCOEM and the Founder, CEO & MD of BiovaCo Nexus PVT. LTD. (DIN: 11781675). He specializes in Embedded Systems, AI integration, Health-Tech, and Enterprise SaaS. 
+
+## Domains of Expertise
+- **Embedded Systems & VLSI:** ARM Cortex-M, Verilog, SystemVerilog, PCB Design, Microcontrollers.
+- **Biomedical & Signal Processing:** Smart Adaptive AGC Systems, Neural Signal Monitoring, EEG, Circuit Design.
+- **AI & Enterprise Software:** AI Integration, SaaS, ERP, Linux Servers, C/C++ Development.
+- **Business Strategy & Ops:** Product Innovation, Strategic Planning, Operations Management.
+
+## Mission
+To utilize hardware, data, and algorithms to better understand and monitor critical human states, specifically focusing on how neural activity and physiological signals change under extreme stress, seizures, and trauma.
+
+## Contact Information
+- Phone: +91 81778 06422 / +91 92265 95332
+- WhatsApp: +91 92265 95332
+- Email: nakulmundhada23@gmail.com / ceo@biovaco.in
+- Company: BiovaCo Nexus PVT. LTD.
