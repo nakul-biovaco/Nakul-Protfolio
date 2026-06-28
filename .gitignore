@@ -1,0 +1,15 @@
+.next
+.DS_Store
+node_modules
+/public/certificates/images/*.pdf
+/public/certificates/images/*.png
+/public/images/*.png
+/public/images/*.jpg
+/public/*.png
+/public/*.jpg
+/public/*.svg
+/public/*.xml
+/public/*.pdf
+/public/*.webmanifest
+.env.local
+.env

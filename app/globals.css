@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode — premium linen cream/white background with deep forest green accents */
+    --background: 40 33% 97%;       /* #F8F6F2 - extremely premium warm linen off-white */
+    --foreground: 150 20% 12%;      /* #121a15 - very deep charcoal-green for high text contrast */
+    --card: 0 0% 100%;              /* Glassmorphic base */
+    --card-foreground: 150 20% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 20% 12%;
+    --primary: 140 28% 32%;         /* #3a5f40 - rich deep forest green for readability */
+    --primary-foreground: 40 33% 98%;
+    --secondary: 93 20% 50%;        /* #7b8e65 - richer sage green */
+    --secondary-foreground: 150 20% 12%;
+    --muted: 40 20% 93%;
+    --muted-foreground: 150 12% 35%; /* Better sub-text contrast */
+    --accent: 93 20% 50%;           /* #7b8e65 - richer sage green */
+    --accent-foreground: 150 20% 12%;
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 40 33% 98%;
+    --border: 93 15% 82%;           /* cleaner subtle border */
+    --input: 93 15% 82%;
+    --ring: 140 28% 32%;
+    --radius: 0.75rem;
+    --chart-1: 140 28% 32%;
+    --chart-2: 93 20% 50%;
+    --chart-3: 40 33% 97%;
+    --chart-4: 140 30% 55%;
+    --chart-5: 93 25% 50%;
+    --sidebar: 40 25% 95%;          /* slightly warmer sidebar */
+    --sidebar-foreground: 150 20% 12%;
+    --sidebar-primary: 140 28% 32%;
+    --sidebar-primary-foreground: 40 33% 98%;
+    --sidebar-accent: 40 20% 91%;
+    --sidebar-accent-foreground: 150 20% 12%;
+    --sidebar-border: 93 15% 84%;
+    --sidebar-ring: 140 28% 32%;
+    --highlight: 140 28% 32%;
+  }
+
+  .dark {
+    /* Dark mode — deep charcoal with forest green accents */
+    --background: 150 12% 8%;       /* deep greenish-charcoal */
+    --foreground: 40 15% 88%;       /* warm off-white */
+    --card: 150 10% 12%;            /* slightly lighter card */
+    --card-foreground: 40 15% 88%;
+    --popover: 150 10% 12%;
+    --popover-foreground: 40 15% 88%;
+    --primary: 140 24% 42%;         /* #588157 - forest green */
+    --primary-foreground: 40 21% 95%;
+    --secondary: 150 10% 18%;
+    --secondary-foreground: 40 15% 88%;
+    --muted: 150 10% 16%;
+    --muted-foreground: 93 12% 55%;
+    --accent: 93 18% 63%;           /* #A3B18A - sage */
+    --accent-foreground: 150 12% 8%;
+    --destructive: 0 50% 40%;
+    --destructive-foreground: 40 15% 88%;
+    --border: 150 10% 18%;
+    --input: 150 10% 18%;
+    --ring: 140 24% 42%;
+    --chart-1: 140 24% 42%;
+    --chart-2: 93 18% 63%;
+    --chart-3: 40 21% 85%;
+    --chart-4: 140 30% 55%;
+    --chart-5: 93 25% 50%;
+    --sidebar: 150 12% 7%;
+    --sidebar-foreground: 40 15% 88%;
+    --sidebar-primary: 140 24% 42%;
+    --sidebar-primary-foreground: 40 21% 95%;
+    --sidebar-accent: 150 10% 16%;
+    --sidebar-accent-foreground: 40 15% 88%;
+    --sidebar-border: 150 10% 18%;
+    --sidebar-ring: 140 24% 42%;
+    --highlight: 93 18% 63%;        /* sage for dark-mode highlights */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(88, 129, 87, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(163, 177, 138, 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(88, 129, 87, 0.03) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(163, 177, 138, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+  
+  .dark body {
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(88, 129, 87, 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(163, 177, 138, 0.09) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(88, 129, 87, 0.04) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(163, 177, 138, 0.07) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+/* ── Professional utility classes ── */
+
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3.5px);
+  box-shadow: 0 12px 30px rgba(58, 95, 64, 0.08);
+}
+.dark .hover-lift:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Global Glassmorphic Card Styling */
+.bg-card {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(14px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(120%) !important;
+  border: 1px solid hsl(var(--border) / 0.4) !important;
+  box-shadow: 0 8px 30px rgba(58, 95, 64, 0.04) !important;
+}
+
+.dark .bg-card {
+  background-color: rgba(14, 18, 16, 0.6) !important;
+  backdrop-filter: blur(14px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Glassmorphic Sidebar & Fixed Navs */
+.bg-sidebar, [role="navigation"], nav.fixed {
+  background-color: rgba(248, 246, 242, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-right: 1px solid hsl(var(--border) / 0.5) !important;
+  box-shadow: 4px 0 24px rgba(58, 95, 64, 0.02) !important;
+}
+
+.dark .bg-sidebar, .dark [role="navigation"], .dark nav.fixed {
+  background-color: rgba(12, 15, 13, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Gradient text — static, no animation */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Profile image — subtle, static ring glow */
+.profile-glow {
+  background: radial-gradient(circle, rgba(88, 129, 87, 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+}
+.profile-glow-ring {
+  background: radial-gradient(circle, transparent 40%, rgba(88, 129, 87, 0.12) 60%, transparent 100%);
+  filter: blur(24px);
+}
+
+/* Light / dark mode text overrides */
+.typewriter-text {
+  color: hsl(var(--foreground)) !important;
+}
+.innovative-text {
+  color: hsl(var(--foreground)) !important;
+}
+.dark .typewriter-text {
+  color: hsl(var(--primary)) !important;
+}
+.dark .innovative-text {
+  color: hsl(var(--primary)) !important;
+}
+
+/* Sidebar nav */
+.sidebar-nav a {
+  color: hsl(var(--sidebar-foreground));
+  transition: all 0.2s ease;
+}
+.sidebar-nav a:hover {
+  color: hsl(var(--sidebar-primary));
+  background-color: hsl(var(--sidebar-accent));
+}
+.sidebar-nav a.active {
+  color: hsl(var(--sidebar-primary-foreground));
+  background-color: hsl(var(--sidebar-primary));
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 768px) {
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
