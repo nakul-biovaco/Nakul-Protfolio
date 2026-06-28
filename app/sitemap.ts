@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://biovaco.in' // Make sure this is the final deployed URL
+  const baseUrl = 'https://www.nakulmundhada.site' // Make sure this is the final deployed URL
 
   return [
     {

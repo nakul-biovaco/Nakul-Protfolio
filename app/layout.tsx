@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: "Nakul Mahendra Mundhada | Founder & Engineer",
     description:
       "Founder & MD at BiovaCo Nexus. Specializing in Health-Tech, AI, Embedded Systems, VLSI, and Enterprise SaaS.",
-    url: "https://biovaco.in", // Replace with your actual domain
+    url: "https://www.nakulmundhada.site", // Replace with your actual domain
     siteName: "Nakul Mundhada Portfolio",
     images: [
       {
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     "googlebot-news": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
     "prerender-status-code": "200",
     "google-site-verification": "googlea30bc07b0be2dcc1",
-    "llm-knowledge-base": "https://biovaco.in/llms.txt",
+    "llm-knowledge-base": "https://www.nakulmundhada.site/llms.txt",
     "geo-optimization": "health-tech, ai, embedded-systems",
   },
   robots: {
@@ -108,8 +108,8 @@ export default function RootLayout({
         "@type": "Organization",
         "name": "BiovaCo Nexus PVT. LTD."
       },
-      "url": "https://biovaco.in",
-      "image": "https://biovaco.in/nakul-og-image.png",
+      "url": "https://www.nakulmundhada.site",
+      "image": "https://www.nakulmundhada.site/nakul-og-image.png",
       "sameAs": [
         "https://linkedin.com/in/nakulmundhada",
         "https://github.com/nakul-biovaco"
@@ -120,10 +120,10 @@ export default function RootLayout({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Nakul Mundhada Portfolio",
-      "url": "https://biovaco.in",
+      "url": "https://www.nakulmundhada.site",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://biovaco.in/projects?q={search_term_string}",
+        "target": "https://www.nakulmundhada.site/projects?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }

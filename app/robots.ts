@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'], // Keep internal APIs hidden to focus crawl budget on content
     },
-    sitemap: 'https://biovaco.in/sitemap.xml',
+    sitemap: 'https://www.nakulmundhada.site/sitemap.xml',
   }
 }
