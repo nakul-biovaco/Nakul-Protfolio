@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   other: {
     "googlebot-news": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
     "prerender-status-code": "200",
-    "google-site-verification": "YOUR_VERIFICATION_STRING",
+    "google-site-verification": "googlea30bc07b0be2dcc1",
     "llm-knowledge-base": "https://biovaco.in/llms.txt",
     "geo-optimization": "health-tech, ai, embedded-systems",
   },
