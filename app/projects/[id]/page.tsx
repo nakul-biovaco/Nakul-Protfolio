@@ -3,7 +3,37 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, ExternalLink, Github, Calendar, Users, Award, Target, Cpu, Waves, HeartPulse, Binary, Cctv, RadioTower, Maximize, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { 
+  ArrowLeft, 
+  ExternalLink, 
+  Github, 
+  Calendar, 
+  Users, 
+  Award, 
+  Target, 
+  Cpu, 
+  Waves, 
+  HeartPulse, 
+  Binary, 
+  Cctv, 
+  RadioTower, 
+  Maximize, 
+  X, 
+  ChevronLeft, 
+  ChevronRight, 
+  Download, 
+  Sparkles, 
+  Globe, 
+  Laptop,
+  Copy,
+  Check,
+  ShieldAlert,
+  Terminal,
+  FolderArchive,
+  Info,
+  CheckCircle2,
+  AlertTriangle
+} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -25,11 +55,67 @@ const domainIcons = {
   "Communication Systems": RadioTower,
   "RTL Design": Cpu,
   "Boolean Logic": Binary,
-  "Hardware Realization": Cpu
+  "Hardware Realization": Cpu,
+  "Browser Extensions": Globe,
+  "Web Analytics": Target,
+  "Frontend Architecture": Laptop,
 }
 
 // Project data with deep technical details
 const projectsData = {
+  "attendance-insights": {
+    id: 0,
+    title: "Attendance Insights — Chrome Extension",
+    description: "A high-performance Manifest V3 Chrome extension providing real-time attendance analytics, bunk calculators, projection models, and automated warnings for college students.",
+    longDescription: "Attendance Insights brings real-time attendance intelligence, safe-skip thresholds, and course trajectory projections directly to university students through a privacy-first, zero-telemetry Chrome extension.",
+    detailedDescription: `
+      Attendance Insights was engineered to solve a widespread student challenge: accurately tracking attendance margins, understanding how many lectures can be safely skipped or must be attended, and avoiding attendance shortfalls before it's too late.
+
+      Key Engineering Highlights:
+      • Manifest V3 Compliant: Implemented using lightweight background service workers and secure isolated content scripts with low CPU & memory consumption.
+      • Real-Time Bunk & Requirement Calculator: Computes exact numbers of classes you can skip or need to attend to achieve desired thresholds (75%, 80%, 85%) on the fly.
+      • Projection & Simulation Engine: Calculates forecasted final attendance percentages across upcoming semester timelines.
+      • Privacy-First Architecture: 100% client-side computation. Never collects or transmits student credentials, grades, or portal data.
+      • Seamless In-Portal Dashboard Overlay: Injectable modular UI that integrates cleanly into academic portal themes with full Dark Mode support.
+    `,
+    techStack: [
+      "JavaScript (ES6+)",
+      "Chrome Extension — Manifest V3",
+      "Chrome Extension APIs",
+      "DOM Parsing",
+      "MutationObserver",
+      "Token-based matching",
+      "Local browser storage",
+      "Modular calculation / projection / risk engines"
+    ],
+    category: "Browser Extension & Web Tools",
+    domains: ["Browser Extensions", "Web Analytics", "Frontend Architecture"],
+    status: "Completed",
+    duration: "Completed — August 28, 2026",
+    team: "Individual Project",
+    highlights: [
+      "Real-time attendance calculations & bunk margin optimizer",
+      "Strict client-side privacy with zero external tracking",
+      "Seamless in-portal UI overlay with instant response time",
+      "Manifest V3 compliant with background service workers",
+      "Modular calculation, projection, and risk engines"
+    ],
+    challenges: [
+      "Reliably parsing diverse dynamic table structures across student portals",
+      "Ensuring zero performance impact on heavy portal DOM structures",
+      "Strict adherence to Chrome Web Store security & privacy standards"
+    ],
+    outcomes: [
+      "Developer unpacked Chrome extension ready for distribution",
+      "Adopted by university students for stress-free attendance planning",
+      "Highly responsive, zero-latency calculation engine"
+    ],
+    images: ["/attendance-insights.png"],
+    demoLink: "/download/attendance-insights",
+    downloadLink: "/download/attendance-insights",
+    githubLink: "https://github.com/nakul-biovaco/Attendance-Extension-RCOEM",
+    featured: true,
+  },
   "smart-agc-system": {
     id: 1,
     title: "Smart Adaptive AGC System for Low-Power Sensing Applications",
@@ -384,11 +470,26 @@ export default function ProjectDetailPage() {
   const params = useParams()
   const router = useRouter()
   const projectId = params.id as string
-
   const project = projectsData[projectId as keyof typeof projectsData]
 
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [downloadClicks, setDownloadClicks] = useState<number>(0)
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (projectId === "attendance-insights") {
+      fetch("/api/analytics/downloads?summary=public")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && typeof data.totalClicks === "number") {
+            setDownloadClicks(data.totalClicks)
+          }
+        })
+        .catch(() => {})
+    }
+  }, [projectId])
 
   useEffect(() => {
     if (!isLightboxOpen || !project) return
@@ -471,7 +572,7 @@ export default function ProjectDetailPage() {
               >
                 {project.status}
               </Badge>
-              {project.featured && (
+              {(project as any).featured && (
                 <Badge className="bg-primary text-primary-foreground text-sm md:text-base">
                   <Award className="w-3 h-3 mr-1" />
                   Featured
@@ -615,12 +716,151 @@ export default function ProjectDetailPage() {
                 </div>
               </motion.div>
 
+              {/* How to Install Section (Featured for Attendance Insights) */}
+              {projectId === "attendance-insights" && (
+                <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+                  <Card className="bg-card border border-primary/30 shadow-xl hover-glow hover-target overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full pointer-events-none" />
+                    <CardContent className="p-6 md:p-8 space-y-6">
+                      <div className="flex items-center gap-3 border-b border-border pb-4">
+                        <div className="p-2.5 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                          <Terminal className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl md:text-3xl font-bold text-highlight font-caveat">
+                            How to Install
+                          </h2>
+                          <p className="text-xs md:text-sm text-muted-foreground">
+                            Step-by-step setup guide to load the extension in Google Chrome.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        {/* Step 1 */}
+                        <div className="flex gap-4 items-start">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 border border-primary/30 text-primary font-bold flex items-center justify-center text-sm shadow-sm">
+                            1
+                          </div>
+                          <div className="space-y-1.5 flex-1">
+                            <h4 className="font-semibold text-foreground text-base">Download the Extension</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Download the ZIP file from the button below and extract it on your computer.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Step 2 */}
+                        <div className="flex gap-4 items-start">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 border border-primary/30 text-primary font-bold flex items-center justify-center text-sm shadow-sm">
+                            2
+                          </div>
+                          <div className="space-y-2.5 flex-1">
+                            <h4 className="font-semibold text-foreground text-base">Open Chrome Extensions</h4>
+                            <p className="text-sm text-muted-foreground">In Google Chrome, open:</p>
+                            <div className="flex items-center gap-2 max-w-md">
+                              <div className="flex-1 bg-muted/80 border border-border rounded-md px-3.5 py-2 font-mono text-xs md:text-sm text-foreground select-all flex items-center justify-between shadow-inner">
+                                <span>chrome://extensions</span>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    navigator.clipboard.writeText("chrome://extensions")
+                                    setCopied(true)
+                                    setTimeout(() => setCopied(false), 2000)
+                                  }}
+                                  className="ml-2 text-xs flex items-center gap-1 text-primary hover:underline hover-target transition-all"
+                                  title="Copy URL"
+                                >
+                                  {copied ? (
+                                    <>
+                                      <Check className="w-3.5 h-3.5 text-green-500" />
+                                      <span className="text-green-500 font-medium">Copied</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-3.5 h-3.5" />
+                                      <span>Copy</span>
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Then enable <span className="text-foreground font-medium">Developer mode</span> from the top-right corner.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Step 3 */}
+                        <div className="flex gap-4 items-start">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 border border-primary/30 text-primary font-bold flex items-center justify-center text-sm shadow-sm">
+                            3
+                          </div>
+                          <div className="space-y-1.5 flex-1">
+                            <h4 className="font-semibold text-foreground text-base">Load the Extension</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Click <span className="text-foreground font-medium">Load unpacked</span> and select the extracted extension folder.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Conclusion Callout */}
+                      <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 space-y-2">
+                        <div className="flex items-center gap-2 text-primary font-semibold text-sm md:text-base">
+                          <CheckCircle2 className="w-4 h-4 text-primary" />
+                          <span>That's it.</span>
+                        </div>
+                        <p className="text-xs md:text-sm text-foreground leading-relaxed">
+                          The Attendance Insights extension will be added to Chrome and is ready to use.
+                        </p>
+                        <p className="text-xs text-muted-foreground border-t border-border/50 pt-2 mt-2">
+                          <span className="font-medium text-foreground">Note:</span> This is a developer/unpacked installation, so you need to keep the extracted extension folder on your computer.
+                        </p>
+                      </div>
+
+                      {/* Action Buttons in Section */}
+                      <div className="pt-2 flex flex-wrap items-center gap-3">
+                        <Button
+                          size="lg"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover-target hover-lift shadow-lg shadow-primary/20"
+                          onClick={() => setIsNoticeModalOpen(true)}
+                        >
+                          <Download className="mr-2 h-4 w-4" />
+                          Download Extension ZIP
+                        </Button>
+                        {project.githubLink && (
+                          <Button
+                            variant="outline"
+                            size="lg"
+                            className="hover-target hover-lift"
+                            onClick={() => window.open(project.githubLink, "_blank")}
+                          >
+                            <Github className="mr-2 h-4 w-4" />
+                            View Source Code
+                          </Button>
+                        )}
+                        <div className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-primary/10 border border-primary/20 text-xs text-muted-foreground shadow-sm">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                          </span>
+                          <span>
+                            <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads tracked
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
               {/* Detailed Description */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
                 <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-2xl md:text-3xl font-bold text-highlight mb-6 font-caveat">
-                      Technical Deep Dive 🛠️
+                    <h2 className="text-2xl md:text-3xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                      <Cpu className="w-6 h-6 mr-2 text-primary" /> Technical Deep Dive
                     </h2>
                     <div className="prose prose-lg max-w-none text-foreground">
                       <p className="leading-relaxed whitespace-pre-line text-sm md:text-base">
@@ -640,7 +880,9 @@ export default function ProjectDetailPage() {
               >
                 <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat">Engineering Challenges 🎯</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                      <Target className="w-5 h-5 mr-2 text-primary" /> Engineering Challenges
+                    </h3>
                     <ul className="space-y-3">
                       {project.challenges.map((challenge, index) => (
                         <li key={index} className="flex items-start text-sm md:text-base">
@@ -654,7 +896,9 @@ export default function ProjectDetailPage() {
 
                 <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat">Achievements & Outcomes 🚀</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                      <Award className="w-5 h-5 mr-2 text-accent" /> Achievements & Outcomes
+                    </h3>
                     <ul className="space-y-3">
                       {project.outcomes.map((outcome, index) => (
                         <li key={index} className="flex items-start text-sm md:text-base">
@@ -674,7 +918,9 @@ export default function ProjectDetailPage() {
               <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
                 <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat">Technology Stack ⚡</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                      <Binary className="w-5 h-5 mr-2 text-primary" /> Technology Stack
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {project.techStack.map((tech, index) => (
                         <Badge key={index} variant="secondary" className="text-xs md:text-sm hover-target">
@@ -690,7 +936,9 @@ export default function ProjectDetailPage() {
               <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                 <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat">Key Innovations ✨</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                      <Sparkles className="w-5 h-5 mr-2 text-primary" /> Key Innovations
+                    </h3>
                     <ul className="space-y-3">
                       {project.highlights.map((highlight, index) => (
                         <li key={index} className="flex items-start text-sm md:text-base">
@@ -708,7 +956,9 @@ export default function ProjectDetailPage() {
                 <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                   <Card className="bg-card border border-border shadow-xl hover-glow hover-target">
                     <CardContent className="p-6 md:p-8">
-                      <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat">Applications 🌐</h3>
+                      <h3 className="text-xl md:text-2xl font-bold text-highlight mb-6 font-caveat flex items-center">
+                        <Globe className="w-5 h-5 mr-2 text-primary" /> Applications
+                      </h3>
                       <div className="flex flex-wrap gap-2">
                         {project.domains.map((domain, index) => {
                           const Icon = domainIcons[domain as keyof typeof domainIcons];
@@ -732,16 +982,36 @@ export default function ProjectDetailPage() {
                 transition={{ delay: 0.7 }}
                 className="space-y-4"
               >
-                {project.demoLink && (
+                {projectId === "attendance-insights" ? (
+                  <div className="space-y-3">
+                    <Button 
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground hover-target hover-lift font-semibold text-base py-6 shadow-lg shadow-primary/20" 
+                      size="lg"
+                      onClick={() => setIsNoticeModalOpen(true)}
+                    >
+                      <Download className="mr-2 h-5 w-5" />
+                      Download Extension ZIP
+                    </Button>
+                    <div className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-primary/10 border border-primary/20 text-xs text-muted-foreground shadow-sm">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      </span>
+                      <span>
+                        <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads tracked
+                      </span>
+                    </div>
+                  </div>
+                ) : (project as any).demoLink ? (
                   <Button 
                     className="w-full bg-primary hover:bg-primary/90 hover-target hover-lift" 
                     size="lg"
-                    onClick={() => window.open(project.demoLink, '_blank')}
+                    onClick={() => window.open((project as any).demoLink, '_blank')}
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Live Demo
                   </Button>
-                )}
+                ) : null}
                 {project.githubLink && (
                   <Button 
                     variant="outline" 
@@ -750,7 +1020,7 @@ export default function ProjectDetailPage() {
                     onClick={() => window.open(project.githubLink, '_blank')}
                   >
                     <Github className="mr-2 h-4 w-4" />
-                    View Code
+                    {projectId === "attendance-insights" ? "View Source Code" : "View Code"}
                   </Button>
                 )}
               </motion.div>
@@ -758,6 +1028,115 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Notice & License Download Modal */}
+      <AnimatePresence>
+        {isNoticeModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setIsNoticeModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
+            >
+              <div className="p-6 md:p-8 space-y-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                      <ShieldAlert className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-highlight">
+                        Notice & License Agreement
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        Developer attribution & usage terms
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsNoticeModalOpen(false)}
+                    className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-3.5 text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                    <p className="font-semibold text-foreground flex items-center gap-1.5">
+                      <Info className="w-4 h-4 text-primary" />
+                      Original Creation & Ownership
+                    </p>
+                    <p>
+                      This extension was engineered and completed on <span className="font-medium text-foreground">August 28, 2026</span> by <span className="font-semibold text-foreground">Nakul Mundhada</span>.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                    <p className="font-semibold text-foreground flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      Free to Use & Test
+                    </p>
+                    <p>
+                      You are free to download, test, and use this extension for personal and educational academic purposes.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-1">
+                    <p className="font-semibold text-amber-500 flex items-center gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-amber-500" />
+                      Modification & Redistribution Policy
+                    </p>
+                    <p className="text-foreground/90">
+                      Intellectual property (IP) is held in the author's name. If you modify, fork, adapt, or distribute updates based on this codebase, you must provide explicit author attribution to Nakul Mundhada and notify the author.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsNoticeModalOpen(false)}
+                    className="hover-target"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover-target hover-lift shadow-md"
+                    onClick={() => {
+                      setIsNoticeModalOpen(false)
+                      setDownloadClicks((prev) => (prev !== null ? prev + 1 : 1))
+                      window.open("/download/attendance-insights", "_blank")
+                      setTimeout(() => {
+                        fetch("/api/analytics/downloads?summary=public")
+                          .then((res) => res.json())
+                          .then((data) => {
+                            if (data && typeof data.totalClicks === "number") {
+                              setDownloadClicks(data.totalClicks)
+                            }
+                          })
+                          .catch(() => {})
+                      }, 1000)
+                    }}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Agree & Download ZIP
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Fullscreen Slider Lightbox Modal */}
       <AnimatePresence>

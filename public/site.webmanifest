@@ -1,0 +1,21 @@
+{
+  "name": "Nakul Mundhada Portfolio",
+  "short_name": "Nakul Mundhada",
+  "description": "Portfolio of Nakul Mundhada - Founder & MD at BiovaCo Nexus. Specializing in Health-Tech, AI, Embedded Systems, VLSI, and Enterprise SaaS.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -159,15 +159,15 @@ export async function isAdmin(): Promise<boolean> {
 import React from "react"
 
 export function useAdminAccess() {
-  const [isAdmin, setIsAdmin] = React.useState(false)
+  const [hasAdminAccess, setHasAdminAccess] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
     isAdmin().then((adminStatus) => {
-      setIsAdmin(adminStatus)
+      setHasAdminAccess(adminStatus)
       setIsLoading(false)
     })
   }, [])
 
-  return { isAdmin, isLoading }
+  return { isAdmin: hasAdminAccess, isLoading }
 }

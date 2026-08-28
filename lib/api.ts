@@ -128,6 +128,45 @@ interface VisitorStats {
 // Mock data that works immediately
 const mockProjects: Project[] = [
   {
+    id: "attendance-insights",
+    title: "Attendance Insights",
+    description: "A high-performance Chrome extension for students to analyze real-time attendance, calculate bunk allowances, forecast percentages, and optimize lecture planning.",
+    longDescription: "Attendance Insights is a privacy-first Chrome Extension built to bring real-time attendance analytics, margin calculators, and projection engines directly into student portals without transmitting any personal data.",
+    detailedDescription: `Attendance Insights empowers college students with instant attendance intelligence. It seamlessly overlays on academic portals to provide deep attendance breakdowns, smart bunk thresholds, and course-by-course risk indicators.
+
+Key Features & Engineering Highlights:
+• Manifest V3 Architecture: Built for ultra-fast performance, low memory footprint, and strict security compliance.
+• Intelligent Bunk Calculator: Computes exact numbers of lectures you can safely skip or must attend to reach target percentages (75% / 80% / 85%).
+• Projection & Forecasting Engine: Real-time dynamic simulation of upcoming weeks and semester attendance trajectories.
+• Privacy-Centric Design: 100% client-side execution; zero student portal credentials or attendance records ever leave the user's browser.
+• Dark Mode & Custom Theming: Modern glassmorphism UI designed to blend natively into student dashboard pages.`,
+    techStack: ["Chrome Extension (Manifest V3)", "JavaScript", "React", "Chrome Storage API", "Tailwind CSS", "Data Analytics"],
+    category: "Browser Extension & Web Tools",
+    status: "Completed",
+    duration: "2025",
+    team: "Solo Project",
+    highlights: [
+      "Real-time attendance calculations & bunk margin optimizer",
+      "Strict client-side privacy with zero external tracking",
+      "Seamless in-portal UI overlay with instant response time",
+      "Manifest V3 compliant with background service workers"
+    ],
+    challenges: [
+      "Parsing diverse HTML table structures across student portals reliably",
+      "Maintaining high-speed DOM injection without impacting portal responsiveness",
+      "Ensuring zero personal data leakage with 100% offline-first storage"
+    ],
+    outcomes: [
+      "Official Chrome Web Store listing",
+      "Streamlined attendance planning for university students",
+      "Zero-latency calculations with intuitive user feedback"
+    ],
+    images: ["/attendance-insights.png"],
+    demoLink: "/download/attendance-insights",
+    githubLink: "https://github.com/nakul-biovaco/Attendance-Extension-RCOEM",
+    featured: true,
+  },
+  {
     id: "smart-agc-system",
     title: "Smart Adaptive AGC System",
     description: "Developed a Smart Adaptive AGC system optimized for low-power, noise-sensitive analog sensing applications.",

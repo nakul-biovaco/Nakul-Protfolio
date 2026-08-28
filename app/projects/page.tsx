@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { 
   Award, 
@@ -15,14 +16,88 @@ import {
   Rocket,
   Laptop,
   Star,
-  Sparkles
+  Sparkles,
+  Download,
+  Github,
+  ExternalLink,
+  ShieldAlert,
+  Info,
+  CheckCircle2,
+  AlertTriangle,
+  X
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { ParallaxContainer } from "@/components/parallax-container"
 
 export default function ProjectsPage() {
+  const [downloadClicks, setDownloadClicks] = useState<number>(0)
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/analytics/downloads?summary=public")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.totalClicks === "number") {
+          setDownloadClicks(data.totalClicks)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const handleAgreeAndDownload = () => {
+    setIsNoticeModalOpen(false)
+    // Real-time optimistic increment on the UI immediately
+    setDownloadClicks((prev) => (prev !== null ? prev + 1 : 1))
+    // Trigger download
+    window.open("/download/attendance-insights", "_blank")
+    // Re-verify with backend API
+    setTimeout(() => {
+      fetch("/api/analytics/downloads?summary=public")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && typeof data.totalClicks === "number") {
+            setDownloadClicks(data.totalClicks)
+          }
+        })
+        .catch(() => {})
+    }, 1000)
+  }
+
   const projects = [
+    {
+      id: "attendance-insights",
+      title: "Attendance Insights",
+      description: "A privacy-first Manifest V3 Chrome extension providing students with instant attendance analytics, bunk calculations, and course trajectory projections.",
+      longDescription: "Attendance Insights empowers students by computing real-time attendance analytics, bunk safety thresholds, and projection models directly inside college portals with zero telemetry.",
+      techStack: [
+        "JavaScript (ES6+)",
+        "Chrome Extension — Manifest V3",
+        "Chrome Extension APIs",
+        "DOM Parsing",
+        "MutationObserver",
+        "Token-based matching",
+        "Local browser storage",
+        "Modular calculation / projection / risk engines"
+      ],
+      category: "Browser Extension & Web Tools",
+      status: "Completed",
+      duration: "Completed — August 28, 2026",
+      team: "Solo Project",
+      highlights: [
+        "Real-time attendance calculations & bunk margin optimizer",
+        "Strict client-side privacy with zero external tracking",
+        "Seamless in-portal UI overlay with instant response time",
+        "Manifest V3 compliant with background service workers",
+        "Modular calculation, projection, and risk engines"
+      ],
+      image: "/attendance-insights.png",
+      demoLink: "/download/attendance-insights",
+      githubLink: "https://github.com/nakul-biovaco/Attendance-Extension-RCOEM",
+      featured: true,
+      icon: <Rocket className="w-4 h-4 mr-1 text-primary" />
+    },
     {
       id: "smart-agc-system",
       title: "Smart Adaptive AGC System",
@@ -101,9 +176,9 @@ export default function ProjectsPage() {
       team: "Solo Project",
       highlights: [
         "16-bit speculative architecture",
-        "Optimized carry logic",
-        "Reduced computation delay",
-        "FPGA implementable"
+        "Predictive carry logic",
+        "Optimized delay paths",
+        "FPGA implementation"
       ],
       image: "/ADDER.png",
       demoLink: "#",
@@ -112,20 +187,20 @@ export default function ProjectsPage() {
       icon: <Cpu className="w-4 h-4 mr-1 text-primary" />
     },
     {
-      id: "morse-converter",
+      id: "morse-code-converter",
       title: "Morse Code Converter in C",
-      description: "Bi-directional Morse code converter with interactive interface implemented in C.",
-      longDescription: "Created a comprehensive Morse code converter program in C that can translate both from text to Morse and vice versa. The program features an interactive command-line interface and handles all standard alphanumeric characters with proper timing for Morse code transmission.",
-      techStack: ["C Programming", "Algorithms", "CLI Development", "Data Structures"],
+      description: "Terminal-based text to Morse code and Morse code to text bi-directional converter in C.",
+      longDescription: "Created a robust bi-directional Morse code converter in C that translates English text to Morse code and vice versa. Features include audio output simulation using system beeps, file input/output support, and real-time interactive translation mode.",
+      techStack: ["C", "Data Structures", "Algorithms", "File I/O"],
       category: "Software Development",
       status: "Completed",
       duration: "1 month",
       team: "Solo Project",
       highlights: [
-        "Bi-directional conversion",
-        "Interactive CLI interface",
-        "Proper timing implementation",
-        "Educational tool"
+        "Bi-directional translation",
+        "Audio playback simulation",
+        "File processing support",
+        "Interactive CLI interface"
       ],
       image: "/MORSE.png",
       demoLink: "#",
@@ -157,7 +232,8 @@ export default function ProjectsPage() {
     },
   ]
 
-  const categoryIcons = {
+  const categoryIcons: Record<string, React.ReactNode> = {
+    "Browser Extension & Web Tools": <Rocket className="w-4 h-4 mr-1" />,
     "Embedded Systems & Analog": <CircuitBoard className="w-4 h-4 mr-1" />,
     "Digital Design": <Cpu className="w-4 h-4 mr-1" />,
     "Sensor Systems": <Zap className="w-4 h-4 mr-1" />,
@@ -332,9 +408,53 @@ export default function ProjectsPage() {
                             )}
                           </div>
 
-                          <div className="flex items-center text-primary font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                            View Details <ArrowRight className="ml-2 w-4 h-4" />
-                          </div>
+                          {project.id === "attendance-insights" ? (
+                            <div className="space-y-4 pt-2">
+                              <div className="flex flex-wrap items-center gap-3">
+                                <Button
+                                  size="sm"
+                                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-xs md:text-sm px-4 py-2 flex items-center shadow-md hover-lift"
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    setIsNoticeModalOpen(true)
+                                  }}
+                                >
+                                  <Download className="w-4 h-4 mr-1.5" />
+                                  Download Extension ZIP
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="font-medium text-xs md:text-sm px-3 py-2 flex items-center hover-lift"
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    window.open(project.githubLink, "_blank")
+                                  }}
+                                >
+                                  <Github className="w-4 h-4 mr-1.5" />
+                                  GitHub
+                                </Button>
+                                <span className="flex items-center text-primary font-semibold text-xs md:text-sm ml-auto group-hover:translate-x-1 transition-transform">
+                                  View Details <ArrowRight className="ml-1.5 w-4 h-4" />
+                                </span>
+                              </div>
+                              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-xs text-muted-foreground shadow-sm">
+                                <span className="relative flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span>
+                                  <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads tracked
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-center text-primary font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                              View Details <ArrowRight className="ml-2 w-4 h-4" />
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                     </Link>
@@ -370,7 +490,7 @@ export default function ProjectsPage() {
                   whileHover={{ y: -5 }}
                 >
                   <Link href={`/projects/${project.id}`}>
-                    <Card className="bg-card border border-border shadow-xl hover:shadow-2xl transition-all duration-300 hover-lift h-full hover-glow hover-target cursor-pointer flex flex-col">
+                    <Card className="bg-card border border-border shadow-xl hover-shadow-2xl transition-all duration-300 hover-lift h-full hover-glow hover-target cursor-pointer flex flex-col">
                       <div className="relative h-40 md:h-48 w-full overflow-hidden border-b border-border">
                         <img
                           src={project.image}
@@ -419,9 +539,38 @@ export default function ProjectsPage() {
                           )}
                         </div>
 
-                        <div className="flex items-center text-primary font-semibold mt-auto">
-                          View Details <ArrowRight className="ml-2 w-4 h-4" />
-                        </div>
+                        {project.id === "attendance-insights" ? (
+                          <div className="space-y-3 pt-2 mt-auto">
+                            <div className="flex items-center justify-between gap-2">
+                              <Button
+                                size="sm"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-xs px-3 py-1.5 flex items-center shadow-sm hover-lift"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  setIsNoticeModalOpen(true)
+                                }}
+                              >
+                                <Download className="w-3.5 h-3.5 mr-1" />
+                                Download ZIP
+                              </Button>
+                              <div className="flex items-center text-primary text-xs font-semibold">
+                                Details <ArrowRight className="ml-1 w-3.5 h-3.5" />
+                              </div>
+                            </div>
+                            <div className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground bg-primary/10 px-2 py-1 rounded border border-primary/20">
+                              <span className="relative flex h-1.5 w-1.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                              </span>
+                              <span><strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-primary font-semibold mt-auto">
+                            View Details <ArrowRight className="ml-2 w-4 h-4" />
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   </Link>
@@ -431,6 +580,101 @@ export default function ProjectsPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Notice & License Download Modal */}
+      <AnimatePresence>
+        {isNoticeModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setIsNoticeModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
+            >
+              <div className="p-6 md:p-8 space-y-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                      <ShieldAlert className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-highlight">
+                        Notice & License Agreement
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        Developer attribution & usage terms
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsNoticeModalOpen(false)}
+                    className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-3.5 text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                    <p className="font-semibold text-foreground flex items-center gap-1.5">
+                      <Info className="w-4 h-4 text-primary" />
+                      Original Creation & Ownership
+                    </p>
+                    <p>
+                      This extension was engineered and completed on <span className="font-medium text-foreground">August 28, 2026</span> by <span className="font-semibold text-foreground">Nakul Mundhada</span>.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                    <p className="font-semibold text-foreground flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      Free to Use & Test
+                    </p>
+                    <p>
+                      You are free to download, test, and use this extension for personal and educational academic purposes.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-1">
+                    <p className="font-semibold text-amber-500 flex items-center gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-amber-500" />
+                      Modification & Redistribution Policy
+                    </p>
+                    <p className="text-foreground/90">
+                      Intellectual property (IP) is held in the author's name. If you modify, fork, adapt, or distribute updates based on this codebase, you must provide explicit author attribution to Nakul Mundhada and notify the author.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsNoticeModalOpen(false)}
+                    className="hover-target"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover-target hover-lift shadow-md"
+                    onClick={handleAgreeAndDownload}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Agree & Download ZIP
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -1,11 +1,38 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  "https://ptepvszlmgtbfvboxwsz.supabase.co"
 
-const isSupabaseConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co')
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  "sb_publishable_USYfwAHk7ykq5FCrIyQaOQ_ErVPg1Eg"
+
+const isSupabaseConfigured = Boolean(
+  supabaseUrl && !supabaseUrl.includes("placeholder")
+)
+
+let customWs: any = undefined
+if (typeof window === "undefined") {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    customWs = require("ws")
+  } catch {
+    // fallback
+  }
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  },
+  ...(customWs ? { realtime: { transport: customWs } } : {}),
   global: {
     fetch: (...args) => {
       if (!isSupabaseConfigured) {
