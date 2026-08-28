@@ -92,3 +92,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Sidebar slider collapse & expansion transitions */
+.lg\:ml-64 {
+  transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+body.sidebar-collapsed .lg\:ml-64,
+html.sidebar-collapsed .lg\:ml-64 {
+  margin-left: 0 !important;
+}
+
