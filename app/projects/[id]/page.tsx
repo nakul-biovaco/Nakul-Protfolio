@@ -787,6 +787,53 @@ export default function ProjectDetailPage() {
                 </div>
               </motion.div>
 
+              {/* Important Note Section (Featured for Attendance Insights) */}
+              {projectId === "attendance-insights" && (
+                <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+                  <Card className="bg-card border border-amber-500/30 shadow-xl overflow-hidden hover-glow hover-target relative">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-full pointer-events-none" />
+                    <CardContent className="p-6 md:p-8 space-y-4">
+                      <div className="flex items-center gap-3 border-b border-border pb-4">
+                        <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                          <AlertTriangle className="w-5 h-5 text-amber-500" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl md:text-2xl font-bold text-highlight font-caveat">
+                            Important Note
+                          </h2>
+                          <p className="text-xs md:text-sm text-muted-foreground">
+                            Compatibility & Origin Story
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 text-sm md:text-base leading-relaxed text-muted-foreground">
+                        <p className="font-semibold text-foreground flex items-center gap-2">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                          Attendance Insights is currently built specifically for students of RCOEM and RBU.
+                        </p>
+                        <p>
+                          It is designed and tested to work with the <strong className="text-foreground">Juno RCOEM ERP Portal</strong> and may not function correctly with other college portals.
+                        </p>
+                        <p>
+                          I originally built this system <strong className="text-foreground">for myself</strong> to make managing my attendance easier — especially calculating which classes I could miss, how much attendance I would lose, and how I could recover it.
+                        </p>
+                        <p>
+                          While building it, I realised that <strong className="text-foreground">I’m probably not the only student dealing with this every week.</strong>
+                        </p>
+                        <p>
+                          So instead of keeping it just for myself, I decided to make it <strong className="text-foreground font-semibold">completely free and available to other RCOEM & RBU students</strong> who face the same problem.
+                        </p>
+                        
+                        <div className="relative p-4 rounded-lg bg-amber-500/5 border-l-4 border-amber-500 mt-2 font-caveat text-lg text-foreground italic shadow-inner">
+                          "Built for my attendance. Shared for everyone dealing with theirs." 🎓⚡
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
               {/* How to Install Section (Featured for Attendance Insights) */}
               {projectId === "attendance-insights" && (
                 <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
