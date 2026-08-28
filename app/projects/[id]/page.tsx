@@ -485,6 +485,10 @@ export default function ProjectDetailPage() {
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  const [downloadState, setDownloadState] = useState<"idle" | "generating" | "downloading" | "completed">("idle")
+  const [downloadProgress, setDownloadProgress] = useState(0)
+  const [countdown, setCountdown] = useState(3)
+
   useEffect(() => {
     if (projectId === "attendance-insights") {
       fetch("/api/analytics/downloads?summary=public")
@@ -497,6 +501,66 @@ export default function ProjectDetailPage() {
         .catch(() => {})
     }
   }, [projectId])
+
+  const handleCloseModal = () => {
+    setIsNoticeModalOpen(false)
+    setDownloadState("idle")
+    setDownloadProgress(0)
+    setCountdown(3)
+  }
+
+  const handleAgreeAndDownload = () => {
+    // 1. Start generation phase
+    setDownloadState("generating")
+    setCountdown(3)
+    
+    // Optimistic UI updates
+    setDownloadClicks((prev) => (prev !== null ? prev + 1 : 1))
+
+    let currentCountdown = 3
+    const countdownInterval = setInterval(() => {
+      currentCountdown -= 1
+      setCountdown(currentCountdown)
+      if (currentCountdown <= 0) {
+        clearInterval(countdownInterval)
+        
+        // 2. Trigger download in new tab
+        window.open("/download/attendance-insights", "_blank")
+        
+        // 3. Start download progress phase (Play Store style)
+        setDownloadState("downloading")
+        setDownloadProgress(0)
+        
+        let currentProgress = 0
+        const progressInterval = setInterval(() => {
+          // Play Store style progress increment
+          const increment = Math.floor(Math.random() * 15) + 5
+          currentProgress = Math.min(currentProgress + increment, 100)
+          setDownloadProgress(currentProgress)
+          
+          if (currentProgress >= 100) {
+            clearInterval(progressInterval)
+            setDownloadState("completed")
+            
+            // Re-verify unique sessions count with backend API
+            fetch("/api/analytics/downloads?summary=public")
+              .then((res) => res.json())
+              .then((data) => {
+                if (data && typeof data.uniqueSessions === "number") {
+                  setDownloadClicks(data.uniqueSessions)
+                }
+              })
+              .catch(() => {})
+
+            // Auto close after 1.5s
+            setTimeout(() => {
+              handleCloseModal()
+            }, 1500)
+          }
+        }, 300)
+      }
+    }, 1000)
+  }
 
   useEffect(() => {
     if (!isLightboxOpen || !project) return
@@ -1044,7 +1108,7 @@ export default function ProjectDetailPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-            onClick={() => setIsNoticeModalOpen(false)}
+            onClick={handleCloseModal}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -1054,92 +1118,174 @@ export default function ProjectDetailPage() {
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
             >
-              <div className="p-6 md:p-8 space-y-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                      <ShieldAlert className="w-6 h-6" />
+              {downloadState !== "idle" ? (
+                <div className="p-8 flex flex-col items-center justify-center text-center space-y-6">
+                  <div className="relative flex items-center justify-center w-24 h-24">
+                    <svg className="w-full h-full transform -rotate-90">
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="40"
+                        className="stroke-muted-foreground/10"
+                        strokeWidth="6"
+                        fill="transparent"
+                      />
+                      {downloadState === "downloading" && (
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="40"
+                          className="stroke-primary"
+                          strokeWidth="6"
+                          fill="transparent"
+                          strokeDasharray={251.2}
+                          strokeDashoffset={251.2 - (251.2 * downloadProgress) / 100}
+                          style={{ transition: "stroke-dashoffset 0.3s ease-out" }}
+                        />
+                      )}
+                      {downloadState === "generating" && (
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="40"
+                          className="stroke-amber-500"
+                          strokeWidth="6"
+                          fill="transparent"
+                          strokeDasharray={251.2}
+                          strokeDashoffset={251.2 - (251.2 * (3 - countdown)) / 3}
+                          style={{ transition: "stroke-dashoffset 1s linear" }}
+                        />
+                      )}
+                      {downloadState === "completed" && (
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="40"
+                          className="stroke-green-500"
+                          strokeWidth="6"
+                          fill="transparent"
+                          strokeDasharray={251.2}
+                          strokeDashoffset={0}
+                        />
+                      )}
+                    </svg>
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {downloadState === "generating" && (
+                        <span className="text-2xl font-bold text-amber-500 animate-pulse">{countdown}</span>
+                      )}
+                      {downloadState === "downloading" && (
+                        <span className="text-xl font-bold text-foreground">{downloadProgress}%</span>
+                      )}
+                      {downloadState === "completed" && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                        >
+                          <Check className="w-8 h-8 text-green-500" />
+                        </motion.div>
+                      )}
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-highlight">
-                        Notice & License Agreement
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        Developer attribution & usage terms
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold text-highlight">
+                      {downloadState === "generating" && "Generating Secure Download Link..."}
+                      {downloadState === "downloading" && "Downloading Package..."}
+                      {downloadState === "completed" && "Download Started!"}
+                    </h4>
+                    <p className="text-xs text-muted-foreground max-w-xs mx-auto">
+                      {downloadState === "generating" && "Preparing latest ZIP release build. Please wait..."}
+                      {downloadState === "downloading" && `Attendance-Extension-RCOEM-main.zip (${(1.4 * downloadProgress / 100).toFixed(1)} MB / 1.4 MB)`}
+                      {downloadState === "completed" && "Your download has started. Thank you!"}
+                    </p>
+                  </div>
+
+                  <div className="w-full max-w-xs bg-muted rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        downloadState === "generating" ? "bg-amber-500 w-1/3 animate-pulse" :
+                        downloadState === "downloading" ? "bg-primary" : "bg-green-500 w-full"
+                      }`}
+                      style={{ width: downloadState === "downloading" ? `${downloadProgress}%` : undefined }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="p-6 md:p-8 space-y-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                        <ShieldAlert className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-highlight">
+                          Notice & License Agreement
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Developer attribution & usage terms
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleCloseModal}
+                      className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3.5 text-xs md:text-sm text-muted-foreground leading-relaxed">
+                    <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                      <p className="font-semibold text-foreground flex items-center gap-1.5">
+                        <Info className="w-4 h-4 text-primary" />
+                        Original Creation & Ownership
+                      </p>
+                      <p>
+                        This extension was engineered and completed on <span className="font-medium text-foreground">August 28, 2026</span> by <span className="font-semibold text-foreground">Nakul Mundhada</span>.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
+                      <p className="font-semibold text-foreground flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        Free to Use & Test
+                      </p>
+                      <p>
+                        You are free to download, test, and use this extension for personal and educational academic purposes.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-1">
+                      <p className="font-semibold text-amber-500 flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-amber-500" />
+                        Modification & Redistribution Policy
+                      </p>
+                      <p className="text-foreground/90">
+                        Intellectual property (IP) is held in the author's name. If you modify, fork, adapt, or distribute updates based on this codebase, you must provide explicit author attribution to Nakul Mundhada and notify the author.
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setIsNoticeModalOpen(false)}
-                    className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
 
-                <div className="space-y-3.5 text-xs md:text-sm text-muted-foreground leading-relaxed">
-                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
-                    <p className="font-semibold text-foreground flex items-center gap-1.5">
-                      <Info className="w-4 h-4 text-primary" />
-                      Original Creation & Ownership
-                    </p>
-                    <p>
-                      This extension was engineered and completed on <span className="font-medium text-foreground">August 28, 2026</span> by <span className="font-semibold text-foreground">Nakul Mundhada</span>.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg bg-muted/50 border border-border space-y-1">
-                    <p className="font-semibold text-foreground flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Free to Use & Test
-                    </p>
-                    <p>
-                      You are free to download, test, and use this extension for personal and educational academic purposes.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-1">
-                    <p className="font-semibold text-amber-500 flex items-center gap-1.5">
-                      <AlertTriangle className="w-4 h-4 text-amber-500" />
-                      Modification & Redistribution Policy
-                    </p>
-                    <p className="text-foreground/90">
-                      Intellectual property (IP) is held in the author's name. If you modify, fork, adapt, or distribute updates based on this codebase, you must provide explicit author attribution to Nakul Mundhada and notify the author.
-                    </p>
+                  <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+                    <Button
+                      variant="outline"
+                      onClick={handleCloseModal}
+                      className="hover-target"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover-target hover-lift shadow-md"
+                      onClick={handleAgreeAndDownload}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Agree & Download ZIP
+                    </Button>
                   </div>
                 </div>
-
-                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsNoticeModalOpen(false)}
-                    className="hover-target"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover-target hover-lift shadow-md"
-                    onClick={() => {
-                      setIsNoticeModalOpen(false)
-                      setDownloadClicks((prev) => (prev !== null ? prev + 1 : 1))
-                      window.open("/download/attendance-insights", "_blank")
-                      setTimeout(() => {
-                        fetch("/api/analytics/downloads?summary=public")
-                          .then((res) => res.json())
-                          .then((data) => {
-                            if (data && typeof data.uniqueSessions === "number") {
-                              setDownloadClicks(data.uniqueSessions)
-                            }
-                          })
-                          .catch(() => {})
-                      }, 1000)
-                    }}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Agree & Download ZIP
-                  </Button>
-                </div>
-              </div>
+              )}
             </motion.div>
           </motion.div>
         )}
