@@ -65,11 +65,11 @@ const domainIcons = {
 const projectsData = {
   "attendance-insights": {
     id: 0,
-    title: "Attendance Insights — Chrome Extension",
-    description: "A high-performance Manifest V3 Chrome extension providing real-time attendance analytics, bunk calculators, projection models, and automated warnings for college students.",
-    longDescription: "Attendance Insights brings real-time attendance intelligence, safe-skip thresholds, and course trajectory projections directly to university students through a privacy-first, zero-telemetry Chrome extension.",
+    title: "RCOEM/RBU Operations 75 — Chrome Extension",
+    description: "A high-performance Manifest V3 Chrome extension providing real-time attendance analytics, bunk calculators, projection models, and automated warnings for RCOEM/RBU students.",
+    longDescription: "RCOEM/RBU Operations 75 brings real-time attendance intelligence, safe-skip thresholds, and course trajectory projections directly to university students through a privacy-first, zero-telemetry Chrome extension.",
     detailedDescription: `
-      Attendance Insights was engineered to solve a widespread student challenge: accurately tracking attendance margins, understanding how many lectures can be safely skipped or must be attended, and avoiding attendance shortfalls before it's too late.
+      RCOEM/RBU Operations 75 was engineered to solve a widespread student challenge: accurately tracking attendance margins, understanding how many lectures can be safely skipped or must be attended, and avoiding attendance shortfalls before it's too late.
 
       Key Engineering Highlights:
       • Manifest V3 Compliant: Implemented using lightweight background service workers and secure isolated content scripts with low CPU & memory consumption.
@@ -812,7 +812,7 @@ export default function ProjectDetailPage() {
                           <span>That's it.</span>
                         </div>
                         <p className="text-xs md:text-sm text-foreground leading-relaxed">
-                          The Attendance Insights extension will be added to Chrome and is ready to use.
+                          The RCOEM/RBU Operations 75 extension will be added to Chrome and is ready to use.
                         </p>
                         <p className="text-xs text-muted-foreground border-t border-border/50 pt-2 mt-2">
                           <span className="font-medium text-foreground">Note:</span> This is a developer/unpacked installation, so you need to keep the extracted extension folder on your computer.

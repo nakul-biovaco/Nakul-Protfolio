@@ -227,7 +227,7 @@ export default function AdminAnalyticsClient() {
                 Admin Analytics Portal
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm">
-                Enter your admin credentials to access Attendance Insights download metrics.
+                Enter your admin credentials to access RCOEM/RBU Operations 75 download metrics.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -290,7 +290,7 @@ export default function AdminAnalyticsClient() {
               </span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold gradient-text font-caveat">
-              Attendance Insights — Analytics
+              RCOEM/RBU Operations 75 — Analytics
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
               Privacy-conscious download click tracking & traffic attribution dashboard

@@ -129,10 +129,10 @@ interface VisitorStats {
 const mockProjects: Project[] = [
   {
     id: "attendance-insights",
-    title: "Attendance Insights",
+    title: "RCOEM/RBU Operations 75",
     description: "A high-performance Chrome extension for students to analyze real-time attendance, calculate bunk allowances, forecast percentages, and optimize lecture planning.",
-    longDescription: "Attendance Insights is a privacy-first Chrome Extension built to bring real-time attendance analytics, margin calculators, and projection engines directly into student portals without transmitting any personal data.",
-    detailedDescription: `Attendance Insights empowers college students with instant attendance intelligence. It seamlessly overlays on academic portals to provide deep attendance breakdowns, smart bunk thresholds, and course-by-course risk indicators.
+    longDescription: "RCOEM/RBU Operations 75 is a privacy-first Chrome Extension built to bring real-time attendance analytics, margin calculators, and projection engines directly into student portals without transmitting any personal data.",
+    detailedDescription: `RCOEM/RBU Operations 75 empowers college students with instant attendance intelligence. It seamlessly overlays on academic portals to provide deep attendance breakdowns, smart bunk thresholds, and course-by-course risk indicators.
 
 Key Features & Engineering Highlights:
 • Manifest V3 Architecture: Built for ultra-fast performance, low memory footprint, and strict security compliance.

@@ -68,9 +68,9 @@ export default function ProjectsPage() {
   const projects = [
     {
       id: "attendance-insights",
-      title: "Attendance Insights",
+      title: "RCOEM/RBU Operations 75",
       description: "A privacy-first Manifest V3 Chrome extension providing students with instant attendance analytics, bunk calculations, and course trajectory projections.",
-      longDescription: "Attendance Insights empowers students by computing real-time attendance analytics, bunk safety thresholds, and projection models directly inside college portals with zero telemetry.",
+      longDescription: "RCOEM/RBU Operations 75 empowers students by computing real-time attendance analytics, bunk safety thresholds, and projection models directly inside college portals with zero telemetry.",
       techStack: [
         "JavaScript (ES6+)",
         "Chrome Extension — Manifest V3",
