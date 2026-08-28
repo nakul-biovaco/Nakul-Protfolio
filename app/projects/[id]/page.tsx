@@ -846,7 +846,7 @@ export default function ProjectDetailPage() {
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                           </span>
                           <span>
-                            <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads tracked
+                            <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> Downloaded
                           </span>
                         </div>
                       </div>
@@ -998,7 +998,7 @@ export default function ProjectDetailPage() {
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                       </span>
                       <span>
-                        <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> live downloads tracked
+                        <strong className="text-foreground font-semibold">{(downloadClicks || 0).toLocaleString()}</strong> Downloaded
                       </span>
                     </div>
                   </div>
