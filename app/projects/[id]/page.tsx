@@ -110,7 +110,14 @@ const projectsData = {
       "Adopted by university students for stress-free attendance planning",
       "Highly responsive, zero-latency calculation engine"
     ],
-    images: ["/attendance-insights.png"],
+    images: [
+      "/projects/operations-75/shot-1.png",
+      "/projects/operations-75/shot-2.png",
+      "/projects/operations-75/shot-3.png",
+      "/projects/operations-75/shot-4.png",
+      "/projects/operations-75/shot-5.png",
+      "/projects/operations-75/shot-6.png",
+    ],
     demoLink: "/download/attendance-insights",
     downloadLink: "/download/attendance-insights",
     githubLink: "https://github.com/nakul-biovaco/Attendance-Extension-RCOEM",

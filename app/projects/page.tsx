@@ -92,7 +92,7 @@ export default function ProjectsPage() {
         "Manifest V3 compliant with background service workers",
         "Modular calculation, projection, and risk engines"
       ],
-      image: "/attendance-insights.png",
+      image: "/projects/operations-75/shot-1.png",
       demoLink: "/download/attendance-insights",
       githubLink: "https://github.com/nakul-biovaco/Attendance-Extension-RCOEM",
       featured: true,
