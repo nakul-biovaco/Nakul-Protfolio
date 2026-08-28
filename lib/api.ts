@@ -1096,7 +1096,7 @@ export const mediaAPI = {
 export const analyticsAPI = {
   trackPageView: async (page: string): Promise<void> => {
     try {
-      await supabase.from("visitor_analytics").insert({
+      await supabase.from("analytics").insert({
         event_type: "page_view",
         page,
         event_name: "page_view",
@@ -1112,7 +1112,7 @@ export const analyticsAPI = {
 
   trackEvent: async (event: string, data?: any): Promise<void> => {
     try {
-      await supabase.from("visitor_analytics").insert({
+      await supabase.from("analytics").insert({
         event_type: "custom_event",
         event_name: event,
         event_data: data || {},
