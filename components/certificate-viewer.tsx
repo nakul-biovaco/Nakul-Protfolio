@@ -18,9 +18,9 @@ export function CertificateViewer({ certificate, isOpen, onClose }: CertificateV
   if (!certificate) return null
 
   const handleDownload = () => {
-    if (certificate.certificateUrl) {
+    if (certificate.credentialUrl) {
       const link = document.createElement("a")
-      link.href = certificate.certificateUrl
+      link.href = certificate.credentialUrl
       link.download = `${certificate.title.replace(/\s+/g, "_")}_Certificate.pdf`
       document.body.appendChild(link)
       link.click()
@@ -56,7 +56,7 @@ export function CertificateViewer({ certificate, isOpen, onClose }: CertificateV
               >
                 {/* Action Buttons - Fixed Position */}
                 <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 flex gap-1 sm:gap-2">
-                  {certificate.certificateUrl && (
+                  {certificate.credentialUrl && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -142,7 +142,7 @@ export function CertificateViewer({ certificate, isOpen, onClose }: CertificateV
                       </motion.div>
 
                       {/* Certificate Image - Mobile Responsive */}
-                      {certificate.certificateImageUrl && (
+                      {certificate.imageUrl && (
                         <motion.div
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -151,7 +151,7 @@ export function CertificateViewer({ certificate, isOpen, onClose }: CertificateV
                         >
                           <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg overflow-hidden shadow-xl border-2 border-white/20">
                             <Image
-                              src={certificate.certificateImageUrl || "/placeholder.svg"}
+                              src={certificate.imageUrl || "/placeholder.svg"}
                               alt={`${certificate.title} Certificate`}
                               width={400}
                               height={300}

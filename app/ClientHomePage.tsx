@@ -31,7 +31,7 @@ const fadeUp = {
     y: 0,
     transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
   }),
-}
+} as any
 
 export default function ClientHomePage() {
   const [media, setMedia] = useState<Media[]>([])
@@ -520,14 +520,7 @@ export default function ClientHomePage() {
 
 
             {/* Admin Panel */}
-            <AdminPanel
-              projects={allProjects}
-              skills={skills}
-              internships={internships}
-              education={education}
-              media={media}
-              onDataUpdate={handleDataUpdate}
-            />
+            <AdminPanel />
           </div>
         </Suspense>
       </div>

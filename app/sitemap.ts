@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 1. Fetch dynamic data from Supabase (Universal Setup)
   // Even if the API fails, we return an empty array to prevent the build from crashing
-  let projects = []
+  let projects: any[] = []
   try {
     const { data } = await supabase.from('projects').select('id, updated_at')
     if (data) projects = data

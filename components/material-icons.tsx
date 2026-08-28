@@ -25,6 +25,11 @@ import Visibility from "@mui/icons-material/Visibility"
 import Schedule from "@mui/icons-material/Schedule"
 import Article from "@mui/icons-material/Article"
 import Search from "@mui/icons-material/Search"
+import ArrowBack from "@mui/icons-material/ArrowBack"
+import WorkspacePremium from "@mui/icons-material/WorkspacePremium"
+import CalendarToday from "@mui/icons-material/CalendarToday"
+import LocationOn from "@mui/icons-material/LocationOn"
+import Launch from "@mui/icons-material/Launch"
 
 // Create a context for Material Icons
 const MaterialIconsContext = React.createContext<any>(null)
@@ -59,6 +64,11 @@ export const MaterialIcons = {
   Schedule,
   Article,
   Search,
+  ArrowBack,
+  Award: WorkspacePremium,
+  CalendarToday,
+  LocationOn,
+  Launch,
 }
 
 // Individual icon exports for specific use cases
@@ -87,4 +97,9 @@ export {
   Schedule,
   Article,
   Search,
+  ArrowBack,
+  WorkspacePremium as Award,
+  CalendarToday,
+  LocationOn,
+  Launch,
 }
