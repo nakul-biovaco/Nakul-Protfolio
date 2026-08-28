@@ -39,8 +39,8 @@ export default function ProjectsPage() {
     fetch("/api/analytics/downloads?summary=public")
       .then((res) => res.json())
       .then((data) => {
-        if (data && typeof data.totalClicks === "number") {
-          setDownloadClicks(data.totalClicks)
+        if (data && typeof data.uniqueSessions === "number") {
+          setDownloadClicks(data.uniqueSessions)
         }
       })
       .catch(() => {})
@@ -57,8 +57,8 @@ export default function ProjectsPage() {
       fetch("/api/analytics/downloads?summary=public")
         .then((res) => res.json())
         .then((data) => {
-          if (data && typeof data.totalClicks === "number") {
-            setDownloadClicks(data.totalClicks)
+          if (data && typeof data.uniqueSessions === "number") {
+            setDownloadClicks(data.uniqueSessions)
           }
         })
         .catch(() => {})
